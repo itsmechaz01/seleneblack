@@ -1,0 +1,211 @@
+{% extends "base.html" %}
+{% block title %}Selene Black - Step Into The Shadows{% endblock %}
+
+{% block content %}
+<!-- Full Screen Hero -->
+<section class="full-hero">
+    <div class="hero-backdrop"></div>
+    <div class="golden-glow"></div>
+    
+    <div class="hero-text">
+        <h1 class="mega-title">Selene Black</h1>
+        <p class="tagline">Where Shadows Dance With Desire</p>
+        <div class="hero-cta">
+            <a href="{{ url_for('register') }}" class="btn btn-gold">Unveil The Mystery</a>
+            <a href="#tiers" class="btn btn-ghost">Explore Tiers</a>
+        </div>
+    </div>
+    
+    <div class="scroll-indicator">
+        <i class="bi bi-chevron-down"></i>
+    </div>
+</section>
+
+<!-- Provocative Intro -->
+<section class="intro-section">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-md-6">
+                <div class="intro-visual">
+                    <div class="pulsing-circle"></div>
+                    <div class="pulsing-circle delay"></div>
+                    <div class="pulsing-circle delay2"></div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <h2 class="section-heading">This Is Not For Everyone</h2>
+                <p class="intro-text">
+                    Selene Black is an exclusive sanctuary for those who crave 
+                    <span class="highlight">untamed beauty</span> and <span class="highlight">unfiltered passion</span>.
+                </p>
+                <p class="intro-text">
+                    Here, the most captivating creators share content that ignites 
+                    the senses and stirs the soul. No boundaries. No compromises.
+                </p>
+                <a href="{{ url_for('register') }}" class="btn btn-gold mt-3">Enter If You Dare</a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Features Strip -->
+<section class="features-section">
+    <div class="container">
+        <div class="row text-center g-4">
+            <div class="col-md-3 col-6">
+                <div class="feature-box">
+                    <div class="feature-icon">
+                        <i class="bi bi-eye-slash-fill"></i>
+                    </div>
+                    <h5>Anonymous</h5>
+                    <p>Your identity stays hidden</p>
+                </div>
+            </div>
+            <div class="col-md-3 col-6">
+                <div class="feature-box">
+                    <div class="feature-icon">
+                        <i class="bi bi-fire"></i>
+                    </div>
+                    <h5>Exclusive</h5>
+                    <p>Content you won't find elsewhere</p>
+                </div>
+            </div>
+            <div class="col-md-3 col-6">
+                <div class="feature-box">
+                    <div class="feature-icon">
+                        <i class="bi bi-lightning-charge-fill"></i>
+                    </div>
+                    <h5>Instant</h5>
+                    <p>Access immediately after join</p>
+                </div>
+            </div>
+            <div class="col-md-3 col-6">
+                <div class="feature-box">
+                    <div class="feature-icon">
+                        <i class="bi bi-shield-lock-fill"></i>
+                    </div>
+                    <h5>Secure</h5>
+                    <p>Discreet billing always</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Creator Showcase -->
+<section class="showcase-section">
+    <div class="container">
+        <h2 class="section-heading text-center">The Enchantresses</h2>
+        <p class="text-center mb-5">Creatures of beauty who command your attention</p>
+        
+        {% if creators %}
+        <div class="row g-4 justify-content-center">
+            {% for creator in creators %}
+            <div class="col-lg-4 col-md-6">
+                <a href="{{ url_for('profile', username=creator.username) }}" class="text-decoration-none">
+                    <div class="creator-card-exotic">
+                        <div class="card-silhouette">
+                            <div class="mini-silhouette silhouette-{{ loop.index }}"></div>
+                        </div>
+                        <div class="card-glow"></div>
+                        <div class="card-content">
+                            <h4>{{ creator.username }}</h4>
+                            <p>{{ creator.posts|length }} exclusive posts</p>
+                            <span class="btn btn-sm btn-gold">View Profile</span>
+                        </div>
+                    </div>
+                </a>
+            </div>
+            {% endfor %}
+        </div>
+        {% else %}
+        <div class="text-center py-5">
+            <div class="waiting-silhouette"></div>
+            <p class="mt-4">The enchantresses are preparing their entrance...</p>
+        </div>
+        {% endif %}
+    </div>
+</section>
+
+<!-- Subscription Tiers -->
+<section class="tiers-section" id="tiers">
+    <div class="container">
+        <h2 class="section-heading text-center">Choose Your Desires</h2>
+        <p class="text-center mb-5">Each tier unlocks deeper pleasures</p>
+        
+        <div class="row g-4 justify-content-center">
+            <!-- Tier 1 -->
+            <div class="col-lg-4">
+                <div class="tier-card">
+                    <div class="tier-header">
+                        <span class="tier-label">Curious</span>
+                        <div class="tier-price">$25.00</div>
+                        <span class="tier-period">per month</span>
+                    </div>
+                    <ul class="tier-features">
+                        <li><i class="bi bi-check2-all"></i> Browse all creators</li>
+                        <li><i class="bi bi-check2-all"></i> View public teasers</li>
+                        <li><i class="bi bi-check2-all"></i> Follow your favorites</li>
+                        <li><i class="bi bi-check2-all"></i> Premium content</li>
+                        <li class="locked"><i class="bi bi-lock-fill"></i> Direct messages</li>
+                        <li class="locked"><i class="bi bi-lock-fill"></i> Custom requests</li>
+                    </ul>
+                    <a href="{{ url_for('register') }}" class="btn btn-outline-tier w-100">Get Curious</a>
+                </div>
+            </div>
+
+            <!-- Tier 2 -->
+            <div class="col-lg-4">
+                <div class="tier-card featured">
+                    <div class="tier-badge">Most Desired</div>
+                    <div class="tier-header">
+                        <span class="tier-label">Passionate</span>
+                        <div class="tier-price">$54.99</div>
+                        <span class="tier-period">per month</span>
+                    </div>
+                    <ul class="tier-features">
+                        <li><i class="bi bi-check2-all"></i> Everything in Curious</li>
+                        <li><i class="bi bi-check2-all"></i> All premium content</li>
+                        <li><i class="bi bi-check2-all"></i> Direct messaging</li>
+                        <li><i class="bi bi-check2-all"></i> Early access drops</li>
+                        <li><i class="bi bi-check2-all"></i> HD quality streams</li>
+                        <li class="locked"><i class="bi bi-lock-fill"></i> VIP experiences</li>
+                    </ul>
+                    <a href="{{ url_for('register') }}" class="btn btn-gold w-100">Ignite Passion</a>
+                </div>
+            </div>
+
+            <!-- Tier 3 -->
+            <div class="col-lg-4">
+                <div class="tier-card vip">
+                    <div class="tier-badge vip">Ultimate Access</div>
+                    <div class="tier-header">
+                        <span class="tier-label">Obsessed</span>
+                        <div class="tier-price">$99.99</div>
+                        <span class="tier-period">per month</span>
+                    </div>
+                    <ul class="tier-features">
+                        <li><i class="bi bi-check2-all"></i> Everything in Passionate</li>
+                        <li><i class="bi bi-check2-all"></i> VIP-only content</li>
+                        <li><i class="bi bi-check2-all"></i> Priority responses</li>
+                        <li><i class="bi bi-check2-all"></i> Custom requests</li>
+                        <li><i class="bi bi-check2-all"></i> Behind the velvet rope</li>
+                        <li><i class="bi bi-check2-all"></i> Private shows</li>
+                    </ul>
+                    <a href="{{ url_for('register') }}" class="btn btn-vip w-100">Become Obsessed</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Final CTA -->
+<section class="final-cta">
+    <div class="cta-silhouette"></div>
+    <div class="container text-center">
+        <h2 class="cta-heading">The Shadows Are Waiting</h2>
+        <p class="cta-sub">Your deepest desires deserve the finest content</p>
+        <a href="{{ url_for('register') }}" class="btn btn-gold btn-lg mt-4">Enter Selene Black</a>
+    </div>
+</section>
+{% endblock %}

@@ -1,0 +1,13 @@
+__pycache__/
+*.pyc
+*.pyo
+*.db
+uploads/
+.env
+*.md
+fly.toml
+Dockerfile
+.dockerignore
+start.sh
+start_server.sh
+preview.html
