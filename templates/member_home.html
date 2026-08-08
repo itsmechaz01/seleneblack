@@ -1,0 +1,72 @@
+{% extends "base.html" %}
+{% block title %}Welcome - Selene Black{% endblock %}
+
+{% block content %}
+<section class="member-hero">
+    <div class="member-hero-glow"></div>
+    <div class="container text-center">
+        <h1 class="member-welcome">Welcome, {{ current_user.username }}</h1>
+        <p class="member-tagline">What is your Desire?</p>
+    </div>
+</section>
+
+{% if subscription %}
+<section class="member-feed">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 mx-auto">
+                <div class="feed-header">
+                    <h2 class="section-heading">Your Feed</h2>
+                    <span class="badge tier-badge-active">{{ subscription.tier|title }} Tier</span>
+                </div>
+                
+                {% if posts %}
+                    <div class="feed-grid">
+                        {% for post in posts %}
+                        <div class="feed-card">
+                            {% if post.media_type == 'video' %}
+                                <div class="feed-media bg-dark d-flex align-items-center justify-content-center">
+                                    <i class="bi bi-play-circle display-3"></i>
+                                </div>
+                            {% else %}
+                                <div class="feed-media bg-secondary d-flex align-items-center justify-content-center">
+                                    <i class="bi bi-image display-3"></i>
+                                </div>
+                            {% endif %}
+                            <div class="feed-body">
+                                <h5>{{ post.title }}</h5>
+                                {% if post.description %}
+                                    <p class="text-muted">{{ post.description }}</p>
+                                {% endif %}
+                                <div class="feed-meta">
+                                    <small>{{ post.created_at.strftime('%b %d, %Y') }}</small>
+                                    {% if post.is_premium %}
+                                        <span class="badge bg-warning text-dark"><i class="bi bi-lock-fill"></i> Premium</span>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    <div class="empty-feed">
+                        <i class="bi bi-inbox display-1"></i>
+                        <p>No content yet. Check back soon.</p>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</section>
+{% else %}
+<section class="member-upsell">
+    <div class="container text-center">
+        <div class="upsell-card">
+            <h2>Unlock the Full Experience</h2>
+            <p>Choose a tier to access Selene Black's exclusive content</p>
+            <a href="{{ url_for('landing') }}#tiers" class="btn btn-gold btn-lg mt-3">Choose Your Tier</a>
+        </div>
+    </div>
+</section>
+{% endif %}
+{% endblock %}

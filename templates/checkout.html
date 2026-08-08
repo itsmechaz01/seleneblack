@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+{% block title %}Checkout - Selene Black{% endblock %}
+
+{% block content %}
+<section class="checkout-section">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-6">
+                <a href="{{ url_for('landing') }}#tiers" class="back-link">
+                    <i class="bi bi-arrow-left"></i> Back to tiers
+                </a>
+                
+                <div class="checkout-card">
+                    <div class="checkout-header">
+                        <h2>Complete Your Order</h2>
+                    </div>
+                    
+                    <div class="checkout-tier-summary">
+                        <div class="tier-summary-name">{{ tier_name }}</div>
+                        <div class="tier-summary-price">${{ tier_price }}<span>/mo</span></div>
+                    </div>
+                    
+                    <div class="checkout-features">
+                        <h5>What you get:</h5>
+                        <ul>
+                            {% for feature in features %}
+                            <li><i class="bi bi-check2-all"></i> {{ feature }}</li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                    
+                    <form method="POST" action="{{ url_for('process_checkout', tier=tier_slug) }}">
+                        <div class="checkout-form">
+                            <h5>Payment Details</h5>
+                            <div class="mb-3">
+                                <label class="form-label">Card Number</label>
+                                <input type="text" class="form-control" placeholder="1234 5678 9012 3456" maxlength="19" required>
+                            </div>
+                            <div class="row">
+                                <div class="col-6 mb-3">
+                                    <label class="form-label">Expiry</label>
+                                    <input type="text" class="form-control" placeholder="MM/YY" maxlength="5" required>
+                                </div>
+                                <div class="col-6 mb-3">
+                                    <label class="form-label">CVC</label>
+                                    <input type="text" class="form-control" placeholder="123" maxlength="4" required>
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Name on Card</label>
+                                <input type="text" class="form-control" placeholder="Full name" required>
+                            </div>
+                        </div>
+                        
+                        <button type="submit" class="btn btn-gold btn-lg w-100 mt-3">
+                            Pay ${{ tier_price }}/month
+                        </button>
+                        
+                        <p class="checkout-secure">
+                            <i class="bi bi-shield-lock-fill"></i> Secure & encrypted payment
+                        </p>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

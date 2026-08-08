@@ -27,15 +27,42 @@ def load_user(user_id):
 def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
+TIER_DATA = {
+    'curious': {
+        'name': 'Curious',
+        'price': '25.00',
+        'features': ['View public teasers', 'Follow your favorites', 'Premium content']
+    },
+    'passionate': {
+        'name': 'Passionate',
+        'price': '54.99',
+        'features': ['Everything in Curious', 'All premium content', 'Direct messaging', 'Early access drops']
+    },
+    'obsessed': {
+        'name': 'Obsessed',
+        'price': '99.99',
+        'features': ['Everything in Passionate', 'VIP-only content', 'Priority responses', 'Custom requests', 'Behind the velvet rope', 'Private shows']
+    }
+}
+
 @app.route('/')
 def index():
+    if current_user.is_authenticated:
+        return redirect(url_for('member_home'))
     creators = User.query.filter_by(is_creator=True).all()
     return render_template('landing.html', creators=creators)
+
+@app.route('/home')
+@login_required
+def member_home():
+    posts = Post.query.filter_by(creator_id=1).order_by(Post.created_at.desc()).all() if User.query.get(1) else []
+    subscription = Subscription.query.filter_by(subscriber_id=current_user.id).first()
+    return render_template('member_home.html', posts=posts, subscription=subscription)
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
     if current_user.is_authenticated:
-        return redirect(url_for('index'))
+        return redirect(url_for('member_home'))
     
     if request.method == 'POST':
         username = request.form.get('username')
@@ -64,7 +91,7 @@ def register():
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if current_user.is_authenticated:
-        return redirect(url_for('index'))
+        return redirect(url_for('member_home'))
     
     if request.method == 'POST':
         username = request.form.get('username')
@@ -73,7 +100,7 @@ def login():
         
         if user and user.check_password(password):
             login_user(user)
-            return redirect(url_for('index'))
+            return redirect(url_for('member_home'))
         
         flash('Invalid username or password.', 'danger')
     
@@ -184,6 +211,36 @@ def delete_post(post_id):
     db.session.commit()
     flash('Post deleted.', 'info')
     return redirect(url_for('dashboard'))
+
+@app.route('/landing')
+def landing():
+    creators = User.query.filter_by(is_creator=True).all()
+    return render_template('landing.html', creators=creators)
+
+@app.route('/checkout/<tier>')
+def checkout(tier):
+    if tier not in TIER_DATA:
+        abort(404)
+    t = TIER_DATA[tier]
+    return render_template('checkout.html', tier_slug=tier, tier_name=t['name'], tier_price=t['price'], features=t['features'])
+
+@app.route('/checkout/<tier>/process', methods=['POST'])
+@login_required
+def process_checkout(tier):
+    if tier not in TIER_DATA:
+        abort(404)
+    t = TIER_DATA[tier]
+    creator = User.query.filter_by(is_creator=True).first()
+    if creator:
+        existing = Subscription.query.filter_by(subscriber_id=current_user.id, creator_id=creator.id).first()
+        if existing:
+            existing.tier = tier
+        else:
+            sub = Subscription(subscriber_id=current_user.id, creator_id=creator.id, tier=tier)
+            db.session.add(sub)
+        db.session.commit()
+    flash(f'Welcome to the {t["name"]} tier!', 'success')
+    return redirect(url_for('member_home'))
 
 if __name__ == '__main__':
     os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)

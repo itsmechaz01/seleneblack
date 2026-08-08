@@ -149,7 +149,7 @@
                         <li class="locked"><i class="bi bi-lock-fill"></i> Direct messages</li>
                         <li class="locked"><i class="bi bi-lock-fill"></i> Custom requests</li>
                     </ul>
-                    <a href="{{ url_for('register') }}" class="btn btn-outline-tier w-100">Get Curious</a>
+                    <a href="{{ url_for('checkout', tier='curious') }}" class="btn btn-outline-tier w-100">Get Curious</a>
                 </div>
             </div>
 
@@ -169,7 +169,7 @@
                         <li><i class="bi bi-check2-all"></i> Early access drops</li>
                         <li class="locked"><i class="bi bi-lock-fill"></i> VIP experiences</li>
                     </ul>
-                    <a href="{{ url_for('register') }}" class="btn btn-gold w-100">Ignite Passion</a>
+                    <a href="{{ url_for('checkout', tier='passionate') }}" class="btn btn-gold w-100">Ignite Passion</a>
                 </div>
             </div>
 
@@ -190,7 +190,7 @@
                         <li><i class="bi bi-check2-all"></i> Behind the velvet rope</li>
                         <li><i class="bi bi-check2-all"></i> Private shows</li>
                     </ul>
-                    <a href="{{ url_for('register') }}" class="btn btn-vip w-100">Become Obsessed</a>
+                    <a href="{{ url_for('checkout', tier='obsessed') }}" class="btn btn-vip w-100">Become Obsessed</a>
                 </div>
             </div>
         </div>
